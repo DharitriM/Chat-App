@@ -3,7 +3,7 @@ const bcryptjs = require("bcryptjs");
 
 async function registerUser(request, response) {
   try {
-    const { name, email, password, profile_pic } = request.body;
+    const { name, email, password, profile_pic, is_loggedin } = request.body;
     const checkEmail = await UserModel.findOne({ email });
 
     // check email
@@ -23,6 +23,7 @@ async function registerUser(request, response) {
       email,
       profile_pic,
       password: hashpassword,
+      is_loggedin,
     };
 
     const user = new UserModel(payload);
