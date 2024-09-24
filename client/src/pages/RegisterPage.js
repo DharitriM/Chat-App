@@ -1,11 +1,12 @@
 import React, { useState } from "react";
 import { IoClose } from "react-icons/io5";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import uploadFile from "../helpers/uploadFile";
 import axios from "axios";
 import toast from "react-hot-toast";
 
 const RegisterPage = () => {
+  const navigate = useNavigate()
   const [data, setData] = useState({
     name: "",
     email: "",
@@ -53,11 +54,18 @@ const RegisterPage = () => {
 
     try {
       const response = await axios.post(URL, data);
-      if (response.success) {
-        toast.success("User registered successfully");
-        console.log(response.data);
+      console.log(response.data);
+
+      if (response.data.success) {
+        toast.success(response.data.message);
+        setData({
+            name: "",
+            email: "",
+            password: "",
+            profile_pic: "",
+          })
         setUploadPhoto(null);
-        setData({});
+        navigate("/email")
       }
     } catch (error) {
       toast.error("error", error);
@@ -68,7 +76,7 @@ const RegisterPage = () => {
   return (
     <div className="mt-5">
       <div className="bg-white w-full max-w-md rounded overflow-hidden p-4 mx-auto">
-        <h3>Welcome to Chat app!</h3>
+        <h2 className="font-semibold text-center">Welcome to Chat app :)</h2>
         <form className="grid gap-4 mt-5" onSubmit={handleSubmit}>
           <div className="flex flex-col gap-1">
             <label htmlFor="name">Name :</label>
